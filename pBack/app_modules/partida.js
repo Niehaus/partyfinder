@@ -6,7 +6,7 @@ module.exports = (connection) => {
     router.get('/buscaporjogo/:id', (req, resp) => {
         let nome_jogo = req.params.id;
 
-        connection.query("SELECT * FROM partida WHERE jogosId IN (SELECT idjogos FROM jogos WHERE nomejogo = ?)",
+        connection.query("SELECT * FROM detalhes WHERE iddetalhes IN (SELECT idjogos FROM jogos WHERE nomejogo = ?)",
         [nome_jogo],
         (err,result) => {
             if (err) {
@@ -19,6 +19,39 @@ module.exports = (connection) => {
         });
     });
 
+    router.get('/buscapordata1/:id', (req, resp) => {
+        let data_jogo = req.params.id;
+
+        connection.query("SELECT * FROM detalhes WHERE data_jogo = ?",
+        [data_jogo],
+        (err,result) => {
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });        
+    });
+
+    router.get('/buscapordata2/:id', (req, resp) => {
+        let data_jogo = req.params.id;
+
+        connection.query("SELECT nomejogo FROM jogos WHERE detalhes = ?",
+        [data_jogo],
+        (err,result) => {
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });        
+    });
+
+    
     //encontrar as partidas nas quais o jogador em questao esta cadastrado ou ja jogou
     router.get('/partidas/:id', (req, resp) => {
         let idJogador = req.params.id;
