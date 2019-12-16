@@ -87,13 +87,12 @@
                     <form clrForm>
                       <clr-input-container>
                         <label>Data do Jogo</label>
-                        <input clrInput formControlName="nome_jogo" [(ngModel)]="novoUsuario.nome"/>
-                        <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
+                        <input clrInput [(ngModel)]="pesquisaData" name="data"/>
                       </clr-input-container>
                     </form>
               </div>
               <div class="card-footer">
-                <a href="..." class="btn btn-sm btn-link">Pesquisar</a>
+                <button (click)="buscaData()" class="btn btn-sm btn-link">Pesquisar</button>
               </div>
             </div>
           </div>
@@ -105,14 +104,14 @@
                     <form clrForm>
                       <clr-input-container>
                         <label>Nome do Jogo</label>
-                        <input clrInput formControlName="nome_jogo" [(ngModel)]="novoUsuario.nome"/>
-                        <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
+                        <input clrInput [(ngModel)]="pesquisaNome" name="nomeJogo"/>
+
                       </clr-input-container>
                     </form>
 
               </div>
               <div class="card-footer">
-                <a (click)="buscaPartida()" class="btn btn-sm btn-link">Pesquisar</a>
+                <button (click)="buscaPartida()" class="btn btn-sm btn-link">Pesquisar</button>
               </div>
             </div>
           </div>
@@ -123,22 +122,38 @@
           <div class="clr-col-lg-8 clr-col-12">
 
             <div *ngIf="activePartida">
-
+              <p>Busca pelo Nome</p>
               <clr-datagrid [(clrDgSelected)]="selected">
                 <clr-dg-column>Nome do Jogo</clr-dg-column>
                 <clr-dg-column>Quantidade de Jogadores</clr-dg-column>
                 <clr-dg-column>Avaliação</clr-dg-column>
                 <clr-dg-row *clrDgItems="let partida of partidas" [clrDgItem]="partida">
-                  <clr-dg-cell>{{partida.jogosId}}</clr-dg-cell>
+                  <clr-dg-cell>{{pesquisaNome}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.qtdJogadores}}</clr-dg-cell>
                   <clr-dg-cell>{{partida.avaliacaoGeral}}</clr-dg-cell>
-                  <clr-dg-cell>{{partida.qtdJogadoers}}</clr-dg-cell>
                 </clr-dg-row>
                 <-- ... -->
               </clr-datagrid>
-
-              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}}</span>
+              <button (click)="join()" class="btn btn-success btn-sm">Entrar nos Jogos</button>
+              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}},</span>
             </div>
 
+            <div *ngIf="activeData">
+              <p>Busca pela Data</p>
+              <clr-datagrid [(clrDgSelected)]="selected">
+                <clr-dg-column>Nome do Jogo</clr-dg-column>
+                <clr-dg-column>Quantidade de Jogadores</clr-dg-column>
+                <clr-dg-column>Avaliação</clr-dg-column>
+                <clr-dg-row *clrDgItems="let partida of partidas" [clrDgItem]="partida">
+                  <clr-dg-cell>{{pesquisaData}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.qtdJogadores}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.avaliacaoGeral}}</clr-dg-cell>
+                </clr-dg-row>
+                <-- ... -->
+              </clr-datagrid>
+              <button (click)="join()" class="btn btn-success btn-sm">Entrar nos Jogos</button>
+              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}},</span>
+            </div>
           </div>
         </div>
 

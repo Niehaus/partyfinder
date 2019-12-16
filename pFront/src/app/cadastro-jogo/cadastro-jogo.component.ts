@@ -10,9 +10,9 @@ import {CadastroJogoService} from '../cadastro-jogo.service';
 })
 export class CadastroJogoComponent implements OnInit {
 
-  cadastrarJogo = true;
   botaovalido = false;
   activePartida = false;
+  activeData = false;
 
   selected = new Array<Partida>();
 
@@ -22,7 +22,8 @@ export class CadastroJogoComponent implements OnInit {
   novoDetalhe = new Detalhes();
 
   partidas = new Array<Partida>();
-
+  pesquisaNome: string;
+  pesquisaData: string;
 
   constructor(private formBuilder: FormBuilder, private service: CadastroJogoService) {
     this.form = this.formBuilder.group({
@@ -45,10 +46,30 @@ export class CadastroJogoComponent implements OnInit {
   ngOnInit() {
   }
 
+  join() {
+    console.log(this.selected);
+  }
   buscaPartida() {
-      this.activePartida = true;
+    if (this.activeData) {
+      this.activeData = false;
+      //todo: limpar vetor de buscas pela data
+    }
+    this.partidas = new Array<Partida>();
+    this.service.pesquisaNomePartida(this.pesquisaNome).subscribe( jogosBuscados => {
+        jogosBuscados.forEach(partida => {
+          this.partidas.push(partida);
+        });
+      });
+    this.activePartida = true;
   }
 
+  buscaData() {
+    if (this.activePartida) {
+      this.activePartida = false;
+    }
+    this.partidas = new Array<Partida>();
+    this.activeData = true;
+  }
   cadastrarNovoJogo() {
       this.novoJogo = new Jogos();
       this.novoDetalhe = new Detalhes();
@@ -115,13 +136,13 @@ export class Usuario {
 
 export class Partida {
   idpartida: number;
-  qtdJogadoers: number;
+  qtdJogadores: number;
   jogosId: number;
   avaliacaoGeral: string;
 
   constructor() {
     this.idpartida = 0;
-    this.qtdJogadoers = 0;
+    this.qtdJogadores = 0;
     this.jogosId = 0;
     this.avaliacaoGeral = '';
   }

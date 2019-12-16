@@ -19,6 +19,9 @@ export class CadastroJogoService {
   }
 
   pesquisaNomePartida(nomejogo: string): Observable<Partida[]> {
-    return this.http.get<Partida[]>();
+    return this.http.get<Partida[]>('http://localhost:3000/buscaporjogo/' + nomejogo);
+  }
+  pesquisaDataPartida(data: string): Observable<Partida[]> {
+    return this.http.get<Partida[]>('http://localhost:3000/buscaporjogo/' + data);
   }
 }
