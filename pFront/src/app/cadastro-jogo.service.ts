@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Detalhes, Jogos, Partida, Usuario} from './cadastro-jogo/cadastro-jogo.component';
+import {Detalhes, Jogos} from './cadastro-jogo/cadastro-jogo.component';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,14 @@ export class CadastroJogoService {
     return  this.http.post('http://localhost:3000/jogos', jogo);
   }
 
-  pesquisaNomePartida(nomejogo: string): Observable<Partida[]> {
-    return this.http.get<Partida[]>('http://localhost:3000/buscaporjogo/' + nomejogo);
+  pesquisaNomePartida(nomejogo: string): Observable<Detalhes[]> {
+    return this.http.get<Detalhes[]>('http://localhost:3000/buscaporjogo/' + nomejogo);
   }
-  pesquisaDataPartida(data: string): Observable<Partida[]> {
-    return this.http.get<Partida[]>('http://localhost:3000/buscaporjogo/' + data);
+  pesquisaIdDetalhes(data: string): Observable<Detalhes[]> {
+    return this.http.get<Detalhes[]>('http://localhost:3000/buscapordata1/' + data);
+  }
+
+  pesquisaIdDetalhes2(iddetalhe: number): Observable<string[]> {
+    return this.http.get<string[]>('http://localhost:3000/buscapordata2/' + iddetalhe);
   }
 }

@@ -14,16 +14,18 @@ export class CadastroJogoComponent implements OnInit {
   activePartida = false;
   activeData = false;
 
-  selected = new Array<Partida>();
+  selected = new Array<Detalhes>();
 
   form: FormGroup;
   novoUsuario = new Usuario();
   novoJogo = new Jogos();
   novoDetalhe = new Detalhes();
 
-  partidas = new Array<Partida>();
+  partidas = new Array<Detalhes>();
   pesquisaNome: string;
+  setnome: string;
   pesquisaData: string;
+
 
   constructor(private formBuilder: FormBuilder, private service: CadastroJogoService) {
     this.form = this.formBuilder.group({
@@ -52,9 +54,10 @@ export class CadastroJogoComponent implements OnInit {
   buscaPartida() {
     if (this.activeData) {
       this.activeData = false;
-      //todo: limpar vetor de buscas pela data
+      // todo: limpar vetor de buscas pela data
     }
-    this.partidas = new Array<Partida>();
+    this.setnome = this.pesquisaNome;
+    this.partidas = new Array<Detalhes>();
     this.service.pesquisaNomePartida(this.pesquisaNome).subscribe( jogosBuscados => {
         jogosBuscados.forEach(partida => {
           this.partidas.push(partida);
@@ -64,10 +67,22 @@ export class CadastroJogoComponent implements OnInit {
   }
 
   buscaData() {
+
     if (this.activePartida) {
       this.activePartida = false;
     }
-    this.partidas = new Array<Partida>();
+    this.partidas = new Array<Detalhes>();
+    this.service.pesquisaIdDetalhes(this.pesquisaData).subscribe(iddata => {
+      iddata.forEach(idjogo => {
+        this.partidas.push(idjogo);
+        this.service.pesquisaIdDetalhes2(idjogo.iddetalhes).subscribe(res => {
+            res.forEach(resBusca => {
+              this.setnome = resBusca;
+            });
+          });
+      });
+    });
+    console.log(this.partidas);
     this.activeData = true;
   }
   cadastrarNovoJogo() {
@@ -79,6 +94,8 @@ export class CadastroJogoComponent implements OnInit {
   submit() {
     console.log('reactive form submit jogos', this.form.controls.jogos.value);
     console.log('reactive form submit detalhes', this.form.controls.detalhes.value);
+    const re = /\//ig;
+    this.novoDetalhe.data_jogo = this.novoDetalhe.data_jogo.replace(re, '-');
     this.service.postDetalhes(this.novoDetalhe).subscribe(res => {
       this.novoJogo.detalhes = res.insertId;
       this.service.postJogo(this.novoJogo).subscribe(resp => { });
@@ -118,6 +135,7 @@ export class Detalhes {
     this.data_jogo = '';
     this.duracao_horas = 0;
     this.qtdPlayers = 0;
+
   }
 }
 export class Usuario {
@@ -134,16 +152,3 @@ export class Usuario {
   }
 }
 
-export class Partida {
-  idpartida: number;
-  qtdJogadores: number;
-  jogosId: number;
-  avaliacaoGeral: string;
-
-  constructor() {
-    this.idpartida = 0;
-    this.qtdJogadores = 0;
-    this.jogosId = 0;
-    this.avaliacaoGeral = '';
-  }
-}

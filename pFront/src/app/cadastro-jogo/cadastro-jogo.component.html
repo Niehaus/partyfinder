@@ -125,34 +125,38 @@
               <p>Busca pelo Nome</p>
               <clr-datagrid [(clrDgSelected)]="selected">
                 <clr-dg-column>Nome do Jogo</clr-dg-column>
+                <clr-dg-column>Data do Jogo</clr-dg-column>
                 <clr-dg-column>Quantidade de Jogadores</clr-dg-column>
-                <clr-dg-column>Avaliação</clr-dg-column>
+                <clr-dg-column>Local</clr-dg-column>
                 <clr-dg-row *clrDgItems="let partida of partidas" [clrDgItem]="partida">
-                  <clr-dg-cell>{{pesquisaNome}}</clr-dg-cell>
-                  <clr-dg-cell>{{partida.qtdJogadores}}</clr-dg-cell>
-                  <clr-dg-cell>{{partida.avaliacaoGeral}}</clr-dg-cell>
+                  <clr-dg-cell>{{setnome}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.data_jogo}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.qtdPlayers}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.local_encontro}}</clr-dg-cell>
                 </clr-dg-row>
                 <-- ... -->
               </clr-datagrid>
               <button (click)="join()" class="btn btn-success btn-sm">Entrar nos Jogos</button>
-              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}},</span>
+              Selected users: <span *ngFor="let partida of selected">{{partida.iddetalhes}},</span>
             </div>
 
             <div *ngIf="activeData">
               <p>Busca pela Data</p>
               <clr-datagrid [(clrDgSelected)]="selected">
-                <clr-dg-column>Nome do Jogo</clr-dg-column>
+                <clr-dg-column>Id do Jogo</clr-dg-column>
+                <clr-dg-column>Data do Jogo</clr-dg-column>
                 <clr-dg-column>Quantidade de Jogadores</clr-dg-column>
-                <clr-dg-column>Avaliação</clr-dg-column>
+                <clr-dg-column>Local</clr-dg-column>
                 <clr-dg-row *clrDgItems="let partida of partidas" [clrDgItem]="partida">
-                  <clr-dg-cell>{{pesquisaData}}</clr-dg-cell>
-                  <clr-dg-cell>{{partida.qtdJogadores}}</clr-dg-cell>
-                  <clr-dg-cell>{{partida.avaliacaoGeral}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.iddetalhes}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.data_jogo}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.qtdPlayers}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.local_encontro}}</clr-dg-cell>
                 </clr-dg-row>
                 <-- ... -->
               </clr-datagrid>
               <button (click)="join()" class="btn btn-success btn-sm">Entrar nos Jogos</button>
-              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}},</span>
+              Selected users: <span *ngFor="let partida of selected">{{partida.iddetalhes}},</span>
             </div>
           </div>
         </div>
