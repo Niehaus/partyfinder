@@ -28,4 +28,7 @@ export class CadastroJogoService {
   pesquisaIdDetalhes2(iddetalhe: number): Observable<string[]> {
     return this.http.get<string[]>('http://localhost:3000/buscapordata2/' + iddetalhe);
   }
+  entraJogo(idjogador: number, iddetalhes: number): Observable<any> {
+    return this.http.post(`http://localhost:3000/novocadastro/${iddetalhes}/${idjogador}`);
+  }
 }

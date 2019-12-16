@@ -50,6 +50,11 @@ export class CadastroJogoComponent implements OnInit {
 
   join() {
     console.log(this.selected);
+    this.selected.forEach(id => {
+      this.service.entraJogo(1, id.iddetalhes).subscribe(res => {
+          console.log('ok');
+      });
+    });
   }
   buscaPartida() {
     if (this.activeData) {
