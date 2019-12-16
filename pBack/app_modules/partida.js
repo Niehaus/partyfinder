@@ -73,6 +73,27 @@ module.exports = (connection) => {
             });
         }    
     });
+
+    router.post('/entrar/', (req, resp) => {
+        let partidas = req.body;
+    
+        if (partidas == null) {
+            resp.status(204).end();
+        } else {
+            connection.query('INSERT INTO partidas_jogadores SET ?',
+            [partidas], 
+            (err, result) => {
+    
+                if (err) {
+                    console.log(err);
+                    resp.status(500).end();
+                } else {
+                    resp.status(200);
+                    resp.json(result);
+                }
+            });
+        }    
+    });
     
     router.put('/partida/:id', (req, resp) => {
         let id_partida = req.params.id;
