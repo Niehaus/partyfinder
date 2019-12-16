@@ -1,16 +1,40 @@
 <clr-tabs>
   <clr-tab>
     <button clrTabLink id="link1">Jogos Cadastrados Por Mim</button>
-    <clr-tab-content id="content1" *clrIfActive>
+    <clr-tab-content id="content1" *clrIfActive="true">
       <img src="assets/img/cadastrojogos.png" style="max-width:37.6%; height:auto; margin: 15px auto " alt="image">
-      <p> chamda da tabela de jogos cadastrador por mim</p>
+      <clr-datagrid>
+        <clr-dg-column>Nome do Jogo</clr-dg-column>
+        <clr-dg-column>Data do Jogo</clr-dg-column>
+        <clr-dg-column>Horario do Jogo</clr-dg-column>
+
+        <clr-dg-row *ngFor="let jogo of jogos">
+          <clr-dg-cell>{{jogo.nomejogo}}</clr-dg-cell>
+          <clr-dg-cell>{{jogo.data_jogo}}</clr-dg-cell>
+          <clr-dg-cell>{{jogo.horario}}</clr-dg-cell>
+
+        </clr-dg-row>
+
+        <clr-dg-footer>{{jogos.length}} users</clr-dg-footer>
+      </clr-datagrid>
     </clr-tab-content>
   </clr-tab>
   <clr-tab>
     <button clrTabLink>Jogos que Estou Cadastrado</button>
-    <clr-tab-content *clrIfActive="true">
+    <clr-tab-content *clrIfActive>
       <img src="assets/img/jogosestou.png" style="max-width:27.6%; height:auto; margin: 15px auto" alt="image">
-      <p> chamda da tabela de jogos em que estou cadastrado</p>
+      <clr-datagrid>
+        <clr-dg-column>Nome do Jogo</clr-dg-column>
+        <clr-dg-column>Data do Jogo</clr-dg-column>
+
+        <clr-dg-row *ngFor="let partida of partidas">
+          <clr-dg-cell>{{partida.nomejogo}}</clr-dg-cell>
+          <clr-dg-cell>{{partida.data_jogo}}</clr-dg-cell>
+
+        </clr-dg-row>
+
+        <clr-dg-footer>{{partidas.length}} users</clr-dg-footer>
+      </clr-datagrid>
     </clr-tab-content>
   </clr-tab>
 </clr-tabs>

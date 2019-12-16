@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '7115194Axd*',
+    password: '1234',
     database: 'partyfinder',
 });
 

@@ -6,25 +6,25 @@
       <h1>Cadastrar Jogo</h1>
       <div class="content-area">
         <form clrStepper [formGroup]="form" (ngSubmit)="submit()">
-          <clr-stepper-panel formGroupName="nameDate">
-            <clr-step-title>Legal Name</clr-step-title>
-            <clr-step-description>Description goes here.</clr-step-description>
+          <clr-stepper-panel formGroupName="jogos">
+            <clr-step-title>Informações sobre o Jogo</clr-step-title>
+            <clr-step-description>Elder me dá total</clr-step-description>
             <clr-step-content *clrIfExpanded>
               <clr-input-container>
                 <label>Nome do Jogo</label>
-                <input clrInput formControlName="nome_jogo" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="nomejogo" [(ngModel)]="novoJogo.nomejogo"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
               <clr-input-container>
                 <label>Nome do Mestre</label>
-                <input clrInput formControlName="nome_mestre" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="dono" [(ngModel)]="novoJogo.dono"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
               <clr-input-container>
                 <label>Horário do Jogo</label>
-                <input clrInput formControlName="horario_jogo" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="horario" [(ngModel)]="novoJogo.horario"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
@@ -34,33 +34,33 @@
 
           <clr-stepper-panel formGroupName="detalhes">
             <clr-step-title>Detalhes do Jogo</clr-step-title>
-            <clr-step-description>...</clr-step-description>
+            <clr-step-description></clr-step-description>
             <clr-step-content *clrIfExpanded>
               <clr-date-container>
-                <input type="date"formControlName="data_jogo" clrDate name="demo" [(ngModel)]="novoUsuario.senha">
+                <input type="date"formControlName="data_jogo" clrDate name="demo" [(ngModel)]="novoDetalhe.data_jogo">
               </clr-date-container>
 
               <clr-input-container>
                 <label>Conhecimento Necessário</label>
-                <input clrInput formControlName="conhecimento_necessario" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="conhecimento_necessario" [(ngModel)]="novoDetalhe.conhecimento_necessario"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
               <clr-input-container>
                 <label>Local de Encontro</label>
-                <input clrInput formControlName="local_encontro" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="local_encontro" [(ngModel)]="novoDetalhe.local_encontro"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
               <clr-input-container>
                 <label>Duração em Horas</label>
-                <input clrInput formControlName="duracao_horas" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="duracao_horas" [(ngModel)]="novoDetalhe.duracao_horas"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
               <clr-input-container>
                 <label>Quantidade de Jogadores Desejada</label>
-                <input clrInput formControlName="qtdPlayers" [(ngModel)]="novoUsuario.nome"/>
+                <input clrInput formControlName="qtdPlayers" [(ngModel)]="novoDetalhe.qtdPlayers"/>
                 <clr-control-error *clrIfError="'required'">First Name Required</clr-control-error>
               </clr-input-container>
 
@@ -68,6 +68,7 @@
             </clr-step-content>
           </clr-stepper-panel>
         </form>
+        <button class="btn btn-primary" routerLink="/usuario" routerLinkActive="active" *ngIf="botaovalido" (click)="cadastrarNovoJogo()">Cadastrar Novo Jogo</button>
       </div>
     </clr-tab-content>
   </clr-tab>
@@ -111,12 +112,33 @@
 
               </div>
               <div class="card-footer">
-                <a href="..." class="btn btn-sm btn-link">Pesquisar</a>
+                <a (click)="buscaPartida()" class="btn btn-sm btn-link">Pesquisar</a>
               </div>
             </div>
           </div>
           <div class="clr-col-lg-4 clr-col-12">
             <img src="assets/img/card.png" style="max-width:50%; height:auto;  display: block;  margin-left: auto;   margin-right: auto;  width: 60%;" alt="image">
+          </div>
+
+          <div class="clr-col-lg-8 clr-col-12">
+
+            <div *ngIf="activePartida">
+
+              <clr-datagrid [(clrDgSelected)]="selected">
+                <clr-dg-column>Nome do Jogo</clr-dg-column>
+                <clr-dg-column>Quantidade de Jogadores</clr-dg-column>
+                <clr-dg-column>Avaliação</clr-dg-column>
+                <clr-dg-row *clrDgItems="let partida of partidas" [clrDgItem]="partida">
+                  <clr-dg-cell>{{partida.jogosId}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.avaliacaoGeral}}</clr-dg-cell>
+                  <clr-dg-cell>{{partida.qtdJogadoers}}</clr-dg-cell>
+                </clr-dg-row>
+                <-- ... -->
+              </clr-datagrid>
+
+              Selected users: <span *ngFor="let partida of selected">{{partida.idpartida}}</span>
+            </div>
+
           </div>
         </div>
 

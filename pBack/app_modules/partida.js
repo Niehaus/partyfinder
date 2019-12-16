@@ -6,10 +6,7 @@ module.exports = (connection) => {
     router.get('/partidas/:id', (req, resp) => {
         let idJogador = req.params.id;
 
-        connection.query("SELECT DISTINCT j.nomejogo, d.data_jogo FROM jogos as j, detalhes as d, partida as p"+
-           "WHERE j.idjogos IN (SELECT idpartida FROM partida WHERE idpartida IN"+
-            "(SELECT p.idpartida FROM partida as p, partidas_jogadores as pj"+ 
-            "WHERE pj.jogadorId = ? AND p.idpartida = pj.partidasID)) and d.iddetalhes = j.detalhes",
+        connection.query("SELECT DISTINCT j.nomejogo, d.data_jogo FROM jogos as j, detalhes as d, partida as p WHERE j.idjogos IN (SELECT idpartida FROM partida WHERE idpartida IN (SELECT p.idpartida FROM partida as p, partidas_jogadores as pj WHERE pj.jogadorId = ? AND p.idpartida = pj.partidasID)) and d.iddetalhes = j.detalhes",
         [idJogador],
         (err,result) => {
             if (err) {
