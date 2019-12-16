@@ -3,6 +3,22 @@ const express = require('express');
 module.exports = (connection) => {
     const router = express.Router();
 
+    router.post('/novocadastro/:id/:id2', (req, resp) => {
+        let id_detalhes = req.params.id;
+        let id2 = req.params.id2
+        connection.query("INSERT INTO partidas_jogadores VALUES(0, (SELECT idpartida FROM partida WHERE jogosId = (SELECT idjogos FROM jogos WHERE detalhes = ?)), ?)",
+        [id_detalhes, id2],
+        (err, result) =>{
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });
+    });
+
     router.get('/meusjogos/:id', (req, resp) => {
         let id_usuario = req.params.id;
 
