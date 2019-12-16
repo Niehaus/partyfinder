@@ -2,6 +2,23 @@ const express = require('express');
 
 module.exports = (connection) => {
     const router = express.Router();
+
+    router.get('/buscaporjogo/:id', (req, resp) => {
+        let nome_jogo = req.params.id;
+
+        connection.query("SELECT * FROM partida WHERE jogosId IN (SELECT idjogos FROM jogos WHERE nomejogo = ?)",
+        [nome_jogo],
+        (err,result) => {
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });
+    });
+
     //encontrar as partidas nas quais o jogador em questao esta cadastrado ou ja jogou
     router.get('/partidas/:id', (req, resp) => {
         let idJogador = req.params.id;
