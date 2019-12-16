@@ -2,7 +2,26 @@ const express = require('express');
 
 module.exports = (connection) => {
     const router = express.Router();
+    //encontrar as partidas nas quais o jogador em questao esta cadastrado ou ja jogou
+    router.get('/partidas/:id', (req, resp) => {
+        let idJogador = req.params.id;
 
+        connection.query("SELECT DISTINCT j.nomejogo, d.data_jogo FROM jogos as j, detalhes as d, partida as p"+
+           "WHERE j.idjogos IN (SELECT idpartida FROM partida WHERE idpartida IN"+
+            "(SELECT p.idpartida FROM partida as p, partidas_jogadores as pj"+ 
+            "WHERE pj.jogadorId = ? AND p.idpartida = pj.partidasID)) and d.iddetalhes = j.detalhes",
+        [idJogador],
+        (err,result) => {
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });
+    });
+    //detalhes sobre a partida em questao
     router.get('/partida/:id', (req, resp) => {
         let id_partida = req.params.id;
 
@@ -19,15 +38,15 @@ module.exports = (connection) => {
             }
         });    
     });
-    /*
-    router.post('/usuario', (req, resp) => {
-        let usuario = req.body;
+    //adicionar uma partida nova
+    router.post('/partida', (req, resp) => {
+        let partida = req.body;
     
-        if (usuario == null) {
+        if (partida == null) {
             resp.status(204).end();
         } else {
-            connection.query('INSERT INTO usuario SET ?',
-            [usuario], 
+            connection.query('INSERT INTO partida SET ?',
+            [partida], 
             (err, result) => {
     
                 if (err) {
@@ -41,12 +60,12 @@ module.exports = (connection) => {
         }    
     });
     
-    router.put('/usuario/:id', (req, resp) => {
-        let id_usuario = req.params.id;
-        let usuario = req.body;    
-    
-        connection.query('UPDATE usuario SET ? WHERE idUsuario = ?',
-        [usuario, id_usuario], 
+    router.put('/partida/:id', (req, resp) => {
+        let id_partida = req.params.id;
+        let partida = req.body;    
+
+        connection.query('UPDATE partida SET ? WHERE idpartida = ?',
+        [partida, id_partida], 
         (err, result ) => {
     
             if (err) {
@@ -58,11 +77,11 @@ module.exports = (connection) => {
         });
     });
     
-    router.delete('/usuario/:id', (req, resp) => {
-        let id_usuario = req.params.id;
+    router.delete('/partida/:id', (req, resp) => {
+        let id_partida = req.params.id;
     
-        connection.query('DELETE FROM usuario WHERE idUsuario = ?',
-        [id_usuario], 
+        connection.query('DELETE FROM partida WHERE idpartida = ?',
+        [id_partida], 
         (err, result) => {
     
             if (err) {
@@ -74,12 +93,12 @@ module.exports = (connection) => {
         });
     });
 
-    router.put('/usuario/:id/avaliar', (req, resp) => {
-        let id_usuario = req.params.id;
+    router.put('/partida/:id/avaliar', (req, resp) => {
+        let id_partida = req.params.id;
         let avaliacao = req.query.avaliacao;
     
-        connection.query('UPDATE usuario SET avaliacao = ? WHERE idUsuario = ?',
-        [avaliacao,id_usuario], 
+        connection.query('UPDATE partida SET avaliacaoGeral = ? WHERE idpartida = ?',
+        [avaliacao,id_partida], 
         (err, result ) => {
     
             if (err) {
@@ -90,6 +109,5 @@ module.exports = (connection) => {
             }
         });
     });
-*/
     return router;
 }

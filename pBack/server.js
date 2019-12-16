@@ -5,7 +5,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '1234',
+    password: '7115194Axd*',
     database: 'partyfinder',
 });
 
@@ -17,7 +17,6 @@ const detalhe_module = require('./app_modules/detalhes.js')
 
 var cors = require('cors');
 app.use(cors());
-
 app.use(express.json());
 app.use(usuario_module(connection));
 app.use(jogos_module(connection));

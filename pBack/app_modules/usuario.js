@@ -3,6 +3,22 @@ const express = require('express');
 module.exports = (connection) => {
     const router = express.Router();
 
+    router.get('/meusjogos/:id', (req, resp) => {
+        let id_usuario = req.params.id;
+
+        connection.query("SELECT j.nomejogo, j.horario, d.data_jogo FROM jogos as j, detalhes as d WHERE d.iddetalhes = j.detalhes AND j.dono = ?",
+        [id_usuario],
+        (err, result) =>{
+            if (err) {
+                console.log(err);
+                resp.status(500).end();
+            } else {        
+                resp.status(200);    
+                resp.json(result);            
+            }
+        });
+    });
+
     router.get('/usuario/:id', (req, resp) => {
         let id_usuario = req.params.id;
     
